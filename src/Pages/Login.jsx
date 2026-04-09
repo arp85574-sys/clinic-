@@ -4,31 +4,64 @@ import React, { useState } from 'react'
 function Login() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("Username:", username)
-    console.log("Password:", password)
 
-    // yahan API call bhi kar sakti ho
+    setLoading(true)
+    setError("")
+
+    try {
+      const response = await fetch("https://dummyjson.com/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({                           
+          username: username,
+          password: password
+        }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        console.log("Login success:", data)
+
+        // token save karna ho to
+        localStorage.setItem("token", data.token)
+
+        alert("Login successful ✅")
+
+        // redirect example
+        // window.location.href = "/dashboard"
+      } else {
+        setError(data.message || "Login failed")
+      }
+
+    } catch (err) {
+      console.error(err)
+      setError("Invalid username or password")
+    }
+
+    setLoading(false)
   }
 
   return (
     <div className="relative h-screen w-full">
 
-      {/* ===== Background Image ===== */}
       <img
         src="/main.svg"
         alt="background"
         className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* ===== Overlay ===== */}
       <div className="absolute inset-0 bg-black/30"></div>
 
-      {/* ===== Login Card ===== */}
       <div className="relative z-10 flex items-center justify-center h-full">
-        <form 
+        <form
           onSubmit={handleSubmit}
           className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8"
         >
@@ -36,9 +69,13 @@ function Login() {
           <h1 className="text-2xl font-bold text-center text-gray-900">
             Login
           </h1>
-          <p className="text-center text-gray-500 mt-2">
-            Welcome back! Please login to your account
-          </p>
+
+          {/* Error */}
+          {error && (
+            <p className="text-red-500 text-sm mt-2 text-center">
+              {error}
+            </p>
+          )}
 
           {/* Username */}
           <div className="mt-6">
@@ -49,11 +86,7 @@ function Login() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your username"
-              className="w-full h-12 px-4 border rounded-xl
-                focus:outline-none focus:border-[#2ED3C5]
-                focus:ring-2 focus:ring-[#2ED3C5]/40
-                transition"
+              className="w-full h-12 px-4 border rounded-xl"
             />
           </div>
 
@@ -66,30 +99,18 @@ function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="********"
-              className="w-full h-12 px-4 border rounded-xl
-                focus:outline-none focus:border-[#2ED3C5]
-                focus:ring-2 focus:ring-[#2ED3C5]/40
-                transition"
+              className="w-full h-12 px-4 border rounded-xl"
             />
           </div>
 
           {/* Button */}
           <button
             type="submit"
-            className="w-full mt-6 h-12 bg-[#2ED3C5] text-white font-semibold rounded-xl
-              hover:bg-[#26b8ab] transition"
+            disabled={loading}
+            className="w-full mt-6 h-12 bg-[#2ED3C5] text-white font-semibold rounded-xl"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
-
-          {/* Extra */}
-          <p className="text-center text-sm text-gray-500 mt-4">
-            Don’t have an account?
-            <span className="text-[#2ED3C5] cursor-pointer ml-1 font-medium">
-              Sign Up
-            </span>
-          </p>
 
         </form>
       </div>

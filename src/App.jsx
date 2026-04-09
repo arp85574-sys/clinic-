@@ -9,6 +9,7 @@ import About from './Pages/About'
 import Login from './Pages/Login'
 import Signup from './Pages/Signup'
 import Deals from './Pages/Deals'
+import Cart from './Pages/Cart'
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
 <Route path='/Login' element={<Login/>}/>
 <Route path='/Signup'element={<Signup/>}/>
 <Route path='/deals'element={<Deals/>}/>
-
+<Route path='/Cart'element={<Cart/>}/>
 
 
 

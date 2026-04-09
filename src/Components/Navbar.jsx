@@ -1,8 +1,13 @@
 
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { ShoppingCart } from 'lucide-react'
 
 function Navbar() {
+
+  // demo cart count
+  const cartCount = 2
+
   return (
     <nav className="h-20 mt-4 bg-[#2ED3C5] flex items-center justify-between px-10 shadow-md">
 
@@ -18,49 +23,54 @@ function Navbar() {
       </div>
 
       {/* Menu */}
-      <ul className="flex gap-10 text-white font-semibold text-lg">
+      <ul className="flex items-center gap-10 text-white font-semibold text-lg">
 
         <li>
-          <Link
-            to="/"
-            className="cursor-pointer hover:text-black transition duration-300"
-          >
+          <Link to="/" className="hover:text-black transition">
             Home
           </Link>
         </li>
 
         <li>
-          <Link
-            to="/about"
-            className="cursor-pointer hover:text-black transition duration-300"
-          >
+          <Link to="/about" className="hover:text-black transition">
             About
           </Link>
         </li>
 
         <li>
-          <Link
-            to="/login"
-            className="cursor-pointer hover:text-black transition duration-300"
-          >
-            Login
-          </Link>
-        </li>
-
-
-        <li>
-          <Link
-            to="/deals"
-            className="cursor-pointer hover:text-black transition duration-300"
-          >
+          <Link to="/deals" className="hover:text-black transition">
             Deals
           </Link>
         </li>
 
         <li>
+          <Link to="/login" className="hover:text-black transition">
+            Login
+          </Link>
+        </li>
+
+        {/* Cart */}
+        <li>
+          <Link
+            to="/cart"
+            className="relative flex items-center gap-2 hover:text-black transition"
+          >
+            <ShoppingCart size={26} />
+
+            {/* Badge */}
+            <span className="absolute -top-2 -right-3 bg-black text-white text-xs px-2 py-[2px] rounded-full">
+              {cartCount}
+            </span>
+
+            Cart
+          </Link>
+        </li>
+
+        {/* Signup */}
+        <li>
           <Link
             to="/signup"
-            className="bg-black px-5 py-2 rounded-full hover:bg-white hover:text-black transition duration-300"
+            className="bg-black px-5 py-2 rounded-full hover:bg-white hover:text-black transition"
           >
             Sign Up
           </Link>
@@ -68,6 +78,12 @@ function Navbar() {
 
       </ul>
 
+   <h1>
+
+
+
+  
+</h1>
     </nav>
   )
 }
